@@ -1,0 +1,21 @@
+# ignore files by extension
+*.suo
+*.user
+*.jfm
+*.dbmdl
+
+# ignore folders
+src/**/bin/**
+src/**/obj/**
+src/.vs/**
+.vs/**
+.vscode/**
+
+# ignore packages
+src/**/packages/**
+Packages/**
+
+
+
+
+
