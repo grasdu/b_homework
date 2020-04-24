@@ -18,5 +18,10 @@
             return await context.Users.ToListAsync();
         }
 
+        public async Task CreateAsync(User user)
+        {
+            await context.Users.AddAsync(user);
+        }
+
     }
 }

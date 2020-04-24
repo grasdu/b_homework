@@ -28,7 +28,8 @@
 
             modelBuilder.Entity<User>().HasData
                 (
-                    new User { Id = 100, Name="Test Elek", DateOfBirth= new DateTime(1991,08,11), AccessLevel= UserAccessLevel.Full}
+                    new User { Id = 100, Name="Test Elek", DateOfBirth= new DateTime(1991,08,11), AccessLevel= UserAccessLevel.Full},
+                    new User { Id = 101, Name = "Test Elza", DateOfBirth = new DateTime(1993, 05, 27), AccessLevel = UserAccessLevel.Limited }
                 );
         }
     }
