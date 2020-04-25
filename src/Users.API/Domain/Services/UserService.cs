@@ -10,6 +10,10 @@
 
     public class UserService : IUserService
     {
+        const string createdString = "User was created";
+        const string updatedString = "User was updated";
+        const string deletedString = "User was deleted";
+
         private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
 
@@ -31,7 +35,7 @@
                 await userRepository.CreateAsync(user);
                 await unitOfWork.CompleteAsync();
 
-                return new ProcessUserResponse(user);
+                return new ProcessUserResponse(user, createdString);
             }
             catch (Exception ex)
             {
@@ -55,7 +59,7 @@
                 this.userRepository.Update(existingUser);
                 await unitOfWork.CompleteAsync();
 
-                return new ProcessUserResponse(existingUser);
+                return new ProcessUserResponse(existingUser, updatedString);
             }
 
             catch(Exception ex)
@@ -78,7 +82,7 @@
                 this.userRepository.Delete(existingUser);
                 await unitOfWork.CompleteAsync();
 
-                return new ProcessUserResponse(existingUser);
+                return new ProcessUserResponse(existingUser, deletedString);
             }
 
             catch (Exception ex)
@@ -89,13 +93,11 @@
 
         #region privates
 
-        private User UpdateUser(User existingUser, User newUser)
+        private void UpdateUser(User existingUser, User newUser)
         {
             existingUser.Name = newUser.Name;
             existingUser.DateOfBirth = newUser.DateOfBirth;
             existingUser.AccessLevel = newUser.AccessLevel;
-
-            return existingUser;
         }
 
         #endregion

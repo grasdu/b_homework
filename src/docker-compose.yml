@@ -1,0 +1,42 @@
+version: '3.7'
+
+networks:
+  dockerapi-dev:
+    driver: bridge 
+
+services:
+  Users.API:
+    image: users.api:latest
+    restart: on-failure
+    depends_on:
+      - "rabbitmq"
+    build:
+      context: ./Users.API
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"     
+    networks:
+      - dockerapi-dev  
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: "rabbitmq"
+    labels:
+      NAME: "rabbitmq"
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    ports:
+    - "4369:4369"
+    - "5671:5671"
+    - "5672:5672"
+    - "25672:25672"
+    - "15671:15671"
+    - "15672:15672"
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    networks:
+      - dockerapi-dev

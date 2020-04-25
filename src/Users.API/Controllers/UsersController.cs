@@ -14,11 +14,13 @@
     {
         private readonly IUserService userService;
         private readonly IMapper mapper;
+        private readonly IRabbitMqService rabbitMqService;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService, IMapper mapper, IRabbitMqService rabbitMqService)
         {
             this.userService = userService;
             this.mapper = mapper;
+            this.rabbitMqService = rabbitMqService;
         }
 
         [HttpGet]
@@ -41,8 +43,10 @@
 
             if (!result.Success)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequest(result.Message);
             }
+
+            rabbitMqService.Send(result);
 
             return Ok(result.User);
         }
@@ -59,7 +63,7 @@
             
             if(!result.Success)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequest(result.Message);
             }
 
             return Ok(result.User);
@@ -72,7 +76,7 @@
 
             if (!result.Success)
             {
-                return BadRequest(result.ErrorMessage);
+                return BadRequest(result.Message);
             }
 
             return Ok(result.User);

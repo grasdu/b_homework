@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
 using Users.API.Domain.Repositories;
 using Users.API.Domain.Services;
 using Users.API.Persistence.Contexts;
@@ -34,6 +35,11 @@ namespace Users.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(typeof(Startup));
+
+            var environment = Configuration.GetSection("Environment");
+
+            services.AddSingleton<IRabbitMqService, RabbitMqService>();
+            services.AddSingleton<IConnectionFactory>(new ConnectionFactory {HostName = environment.Value.ToString() });
 
         }
 

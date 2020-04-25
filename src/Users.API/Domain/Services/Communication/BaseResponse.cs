@@ -3,12 +3,12 @@
     public abstract class BaseResponse
     {
         public bool Success { get; protected set; }
-        public string ErrorMessage { get; protected set; }
+        public string Message { get; protected set; }
 
-        public BaseResponse(bool success, string errorMessage)
+        public BaseResponse(bool success, string message)
         {
             Success = success;
-            ErrorMessage = errorMessage;
+            this.Message = message;
         }
 
     }
