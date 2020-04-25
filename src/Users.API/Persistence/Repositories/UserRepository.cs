@@ -23,5 +23,15 @@
             await context.Users.AddAsync(user);
         }
 
+        public async Task<User> FindByIdAsync(int id)
+        {
+            return await context.Users.FindAsync(id);
+        }
+
+        public void Update(User user)
+        {
+            context.Users.Update(user);
+        }
+
     }
 }

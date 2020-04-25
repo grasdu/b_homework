@@ -6,7 +6,7 @@
     using Users.API.Domain.Models.Converters;
     using Users.API.Domain.Models.Enums;
 
-    public class CreateUser
+    public class ProcessUser
     {
         [Required]
         [MaxLength(30)]

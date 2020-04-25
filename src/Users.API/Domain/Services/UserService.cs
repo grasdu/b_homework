@@ -23,21 +23,46 @@
         {
             return await userRepository.ListAsync();
         }
-        public async Task<CreateUserResponse>CreateAsync(User user)
+
+        public async Task<ProcessUserResponse>CreateAsync(User user)
         {
             try
             {
                 await userRepository.CreateAsync(user);
                 await unitOfWork.CompleteAsync();
 
-                return new CreateUserResponse(user);
+                return new ProcessUserResponse(user);
             }
             catch (Exception ex)
             {
-                return new CreateUserResponse($"An error occurred when creating the user: {ex.Message}");
+                return new ProcessUserResponse($"An error occurred when creating the user: '{ex.Message}'");
             }
         }
 
+        public async Task<ProcessUserResponse> UpdateAsync(int id, User user)
+        {
+            var existingUser = await this.userRepository.FindByIdAsync(id);
+
+            if(existingUser == null)
+            {
+                return new ProcessUserResponse($"User was not found for id:'{id}'");
+            }
+
+            existingUser = user;
+
+            try
+            {
+                this.userRepository.Update(existingUser);
+                await unitOfWork.CompleteAsync();
+
+                return new ProcessUserResponse(existingUser);
+            }
+
+            catch(Exception ex)
+            {
+                return new ProcessUserResponse($"An error occurred when updating the user with id: '{id}'. Error: '{ex.Message}'");
+            }
+        }
 
     }
 }

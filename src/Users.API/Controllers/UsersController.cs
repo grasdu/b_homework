@@ -21,6 +21,7 @@
             this.mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
             var users = await this.userService.ListAsync();
@@ -28,16 +29,35 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] CreateUser resource)
+        public async Task<IActionResult> PostUserAsync([FromBody] ProcessUser resource)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.GetErrorMessages());
             }
-            var user = mapper.Map<CreateUser, User>(resource);
+
+            var user = mapper.Map<ProcessUser, User>(resource);
             var result = await this.userService.CreateAsync(user);
 
             if (!result.Success)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] ProcessUser resource)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+            var user = mapper.Map<ProcessUser, User>(resource);
+            var result = await this.userService.UpdateAsync(id, user);
+            
+            if(!result.Success)
             {
                 return BadRequest(result.ErrorMessage);
             }

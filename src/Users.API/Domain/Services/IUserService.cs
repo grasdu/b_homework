@@ -8,6 +8,7 @@
     public interface IUserService
     {
         Task<IEnumerable<User>> ListAsync();
-        Task<CreateUserResponse> CreateAsync(User user);
+        Task<ProcessUserResponse> CreateAsync(User user);
+        Task<ProcessUserResponse> UpdateAsync(int id, User user);
     }
 }

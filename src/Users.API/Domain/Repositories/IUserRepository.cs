@@ -8,5 +8,7 @@
     {
         Task<IEnumerable<User>> ListAsync();
         Task CreateAsync(User user);
+        Task<User> FindByIdAsync(int id);
+        void Update(User user);
     }
 }

@@ -9,7 +9,7 @@ namespace Users.API.Mapping
     {
         public ResourceToModelProfile()
         {
-            CreateMap<CreateUser, User>();
+            CreateMap<ProcessUser, User>();
         }
     }
 }

@@ -2,11 +2,11 @@
 {
     using Users.API.Domain.Models;
 
-    public class CreateUserResponse : BaseResponse
+    public class ProcessUserResponse : BaseResponse
     {
         public User User { get; private set; }
 
-        private CreateUserResponse(bool success, string errorMessage, User user) : base(success, errorMessage)
+        private ProcessUserResponse(bool success, string errorMessage, User user) : base(success, errorMessage)
         {
             this.User = user;
         }
@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="user">Created user.</param>
         /// <returns>Response.</returns>
-        public CreateUserResponse(User user) : this(true, string.Empty, user)
+        public ProcessUserResponse(User user) : this(true, string.Empty, user)
         { }
 
         /// <summary>
@@ -24,7 +24,7 @@
         /// </summary>
         /// <param name="message">Error message.</param>
         /// <returns>Response.</returns>
-        public CreateUserResponse(string errorMessage) : this(false, errorMessage, null)
+        public ProcessUserResponse(string errorMessage) : this(false, errorMessage, null)
         { }
 
     }
