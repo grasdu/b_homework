@@ -10,5 +10,6 @@
         Task<IEnumerable<User>> ListAsync();
         Task<ProcessUserResponse> CreateAsync(User user);
         Task<ProcessUserResponse> UpdateAsync(int id, User user);
+        Task<ProcessUserResponse> DeleteAsync(int id);
     }
 }

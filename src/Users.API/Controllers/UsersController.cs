@@ -44,7 +44,7 @@
                 return BadRequest(result.ErrorMessage);
             }
 
-            return Ok(user);
+            return Ok(result.User);
         }
 
         [HttpPut("{id}")]
@@ -62,7 +62,21 @@
                 return BadRequest(result.ErrorMessage);
             }
 
-            return Ok(user);
+            return Ok(result.User);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUserAsync(int id)
+        {
+            var result = await this.userService.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result.User);
         }
 
     }

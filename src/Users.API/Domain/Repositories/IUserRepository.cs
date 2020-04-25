@@ -10,5 +10,6 @@
         Task CreateAsync(User user);
         Task<User> FindByIdAsync(int id);
         void Update(User user);
+        void Delete(User user);
     }
 }

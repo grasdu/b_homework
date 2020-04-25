@@ -33,5 +33,10 @@
             context.Users.Update(user);
         }
 
+        public void Delete(User user)
+        {
+            context.Users.Remove(user);
+        }
+
     }
 }
