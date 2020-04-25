@@ -48,7 +48,7 @@
                 return new ProcessUserResponse($"User was not found for id:'{id}'");
             }
 
-            existingUser = user;
+            UpdateUser(existingUser,user);
 
             try
             {
@@ -86,6 +86,19 @@
                 return new ProcessUserResponse($"An error occurred when deleting the user with id: '{id}'. Error: '{ex.Message}'");
             }
         }
+
+        #region privates
+
+        private User UpdateUser(User existingUser, User newUser)
+        {
+            existingUser.Name = newUser.Name;
+            existingUser.DateOfBirth = newUser.DateOfBirth;
+            existingUser.AccessLevel = newUser.AccessLevel;
+
+            return existingUser;
+        }
+
+        #endregion
 
     }
 }

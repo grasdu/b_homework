@@ -65,7 +65,6 @@
             return Ok(result.User);
         }
 
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id)
         {
