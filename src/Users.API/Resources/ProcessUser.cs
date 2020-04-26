@@ -15,6 +15,7 @@
         [JsonConverter(typeof(DateTimeStringJsonConverter))]
         public DateTime DateOfBirth { get; set; }
 
+        [JsonConverter(typeof(UserAccessLevelEnumStringJsonConverter))]
         public UserAccessLevel AccessLevel { get; set; }
 
     }

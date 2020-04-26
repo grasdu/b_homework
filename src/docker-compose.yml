@@ -6,13 +6,10 @@ networks:
 
 services:
   Users.API:
-    image: users.api:latest
+    image: grasdu/users.api:latest
     restart: on-failure
     depends_on:
       - "rabbitmq"
-    build:
-      context: ./Users.API
-      dockerfile: Dockerfile
     ports:
       - "8081:80"     
     networks:
@@ -23,9 +20,6 @@ services:
     hostname: "rabbitmq"
     labels:
       NAME: "rabbitmq"
-    build:
-      context: ./rabbitmq
-      dockerfile: Dockerfile
     ports:
     - "4369:4369"
     - "5671:5671"
@@ -42,13 +36,10 @@ services:
       - dockerapi-dev
       
   Users.Logger:
-    image: users.logger:latest
+    image: grasdu/users.logger:latest
     restart: on-failure
     depends_on:
     - "rabbitmq"
-    build:
-        context: ./Users.Logger
-        dockerfile: Dockerfile
     ports:
     - "8082:80"     
     networks:

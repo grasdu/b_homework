@@ -14,7 +14,7 @@
         public override UserAccessLevel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             UserAccessLevel accessLevel;
-            Enum.TryParse<UserAccessLevel>(reader.GetString(), out accessLevel);
+            Enum.TryParse<UserAccessLevel>(reader.GetString().ToUpperInvariant(), out accessLevel);
             return accessLevel;
         }
 

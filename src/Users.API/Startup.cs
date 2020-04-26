@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using Users.API.Domain.Repositories;
 using Users.API.Domain.Services;
@@ -41,11 +42,32 @@ namespace Users.API
             services.AddSingleton<IRabbitMqService, RabbitMqService>();
             services.AddSingleton<IConnectionFactory>(new ConnectionFactory {HostName = environment.Value.ToString() });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Users.API",
+                    Description = "Creates, lists, deletes or updates Users"
+                });
+
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.Logger");
+                c.RoutePrefix = string.Empty;
+            });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

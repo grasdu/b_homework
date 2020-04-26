@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using Users.Logger.Messaging;
 
@@ -30,11 +31,27 @@ namespace Users.Logger
 
             var environment = Configuration.GetSection("Environment");
             services.AddSingleton<IConnectionFactory>(new ConnectionFactory { HostName = environment.Value.ToString() });
+
+            services.AddSwaggerGen(c =>
+           {
+               c.SwaggerDoc("v1", new OpenApiInfo
+               {
+                   Version = "v1",
+                   Title = "Users.Logger",
+                   Description = "Logs messages from RabbitMQ"
+               });
+
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users.Logger");
+                c.RoutePrefix = string.Empty;
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

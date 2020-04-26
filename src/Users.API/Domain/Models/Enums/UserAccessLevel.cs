@@ -2,9 +2,9 @@
 {
     public enum UserAccessLevel
     {
-        None,
-        Limited,
-        Full
+        NONE,
+        LIMITED,
+        FULL
 
     }
 }
