@@ -45,7 +45,7 @@ namespace Users.Logger.Messaging
 
             consumer.Received += OnMessageReceived;
 
-            channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
+            channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
         }
 
         private void OnMessageReceived(object sender, BasicDeliverEventArgs eventArgs)

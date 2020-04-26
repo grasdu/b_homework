@@ -46,7 +46,7 @@
         ///     {
         ///        "name": "Test User",
         ///        "dateOfBirth": "1991.08.11",
-        ///        "accessLevel": Full
+        ///        "accessLevel": "Full"
         ///     }
         ///    
         /// accessLevel can be Full, Limited or None. It is case insensitive.
@@ -86,7 +86,7 @@
         ///     {
         ///        "name": "Test User",
         ///        "dateOfBirth": "1991.08.11",
-        ///        "accessLevel": Full
+        ///        "accessLevel": "Full"
         ///     }
         ///    
         /// accessLevel can be Full, Limited or None. It is case insensitive.
