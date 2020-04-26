@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
+using System.IO;
 using Users.Logger.Messaging;
 
 namespace Users.Logger
@@ -40,6 +42,10 @@ namespace Users.Logger
                    Title = "Users.Logger",
                    Description = "Logs messages from RabbitMQ"
                });
+
+               var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+               var xmlPath = Path.Combine(basePath, "Users.Logger.xml");
+               c.IncludeXmlComments(xmlPath);
 
            });
         }

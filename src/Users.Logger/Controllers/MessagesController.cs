@@ -18,6 +18,10 @@ namespace Users.Logger.Controllers
             _messagesRepository = messagesRepository ?? throw new ArgumentNullException(nameof(messagesRepository));
         }
 
+        /// <summary>
+        /// Gets a list of the Messages.
+        /// </summary> 
+        /// <returns>A list of Messages</returns>
         [HttpGet]
         public IActionResult Get()
         {

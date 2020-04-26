@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
+using System.IO;
 using Users.API.Domain.Repositories;
 using Users.API.Domain.Services;
 using Users.API.Persistence.Contexts;
@@ -48,9 +50,12 @@ namespace Users.API
                 {
                     Version = "v1",
                     Title = "Users.API",
-                    Description = "Creates, lists, deletes or updates Users"
+                    Description = "A simple REST API to create, list, delete or updates Users"
                 });
 
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "Users.API.xml");
+                c.IncludeXmlComments(xmlPath);
             });
 
         }

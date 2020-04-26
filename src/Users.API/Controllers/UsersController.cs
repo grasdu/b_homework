@@ -5,10 +5,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Users.API.Domain.Models;
+    using Users.API.Domain.Models.Enums;
     using Users.API.Domain.Services;
     using Users.API.Extensions;
     using Users.API.Resources;
 
+    [Produces("application/json")]
     [Route("/api/[controller]")]
     public class UsersController : Controller
     {
@@ -23,6 +25,10 @@
             this.rabbitMqService = rabbitMqService;
         }
 
+        /// <summary>
+        /// Gets a list of the Users.
+        /// </summary> 
+        /// <returns>A list of Users</returns>
         [HttpGet]
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
@@ -30,6 +36,25 @@
             return users;
         }
 
+        /// <summary>
+        /// Creates a new User.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST
+        ///     {
+        ///        "name": "Test User",
+        ///        "dateOfBirth": "1991.08.11",
+        ///        "accessLevel": Full
+        ///     }
+        ///    
+        /// accessLevel can be Full, Limited or None. It is case insensitive.
+        /// </remarks> 
+        /// <param name="resource">ProcessUser</param>
+        /// <returns>A newly created User</returns>
+        /// <response code="200">Returns the newly created User</response>
+        /// <response code="400">Returns an error message</response> 
         [HttpPost]
         public async Task<IActionResult> PostUserAsync([FromBody] ProcessUser resource)
         {
@@ -51,6 +76,26 @@
             return Ok(result.User);
         }
 
+        /// <summary>
+        /// Updates a User.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST
+        ///     {
+        ///        "name": "Test User",
+        ///        "dateOfBirth": "1991.08.11",
+        ///        "accessLevel": Full
+        ///     }
+        ///    
+        /// accessLevel can be Full, Limited or None. It is case insensitive.
+        /// </remarks> 
+        /// <param name="id">Id of the User</param>
+        /// <param name="resource">ProcessUser</param>
+        /// <returns>A newly created User</returns>
+        /// <response code="200">Returns the updated User</response>
+        /// <response code="400">Returns an error message</response> 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, [FromBody] ProcessUser resource)
         {
@@ -69,6 +114,13 @@
             return Ok(result.User);
         }
 
+        /// <summary>
+        /// Deletes a User.
+        /// </summary>
+        /// <param name="id">Id of the User</param>
+        /// <returns>A newly created User</returns>
+        /// <response code="200">Returns the deleted User</response>
+        /// <response code="400">Returns an error message</response> 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id)
         {
