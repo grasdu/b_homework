@@ -2,6 +2,7 @@
 {
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
@@ -9,29 +10,30 @@
 
     public class SubscriberBackgroundService : BackgroundService
     {
-        private readonly ISubscriber _subscriber;
-        private readonly IMessagesRepository _messagesRepository;
-        private readonly ILogger<SubscriberBackgroundService> _logger;
+        private readonly ISubscriber subscriber;
+        private readonly IMessagesRepository messagesRepository;
+        private readonly ILogger<SubscriberBackgroundService> logger;
 
         public SubscriberBackgroundService(ISubscriber subscriber, IMessagesRepository messagesRepository, ILogger<SubscriberBackgroundService> logger)
         {
-            _messagesRepository = messagesRepository ?? throw new ArgumentNullException(nameof(messagesRepository));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.messagesRepository = messagesRepository ?? throw new ArgumentNullException(nameof(messagesRepository));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _subscriber = subscriber ?? throw new ArgumentNullException(nameof(subscriber));
-            _subscriber.OnMessage += OnMessage;
+            this.subscriber = subscriber ?? throw new ArgumentNullException(nameof(subscriber));
+            this.subscriber.OnMessage += OnMessage;
         }
 
         private void OnMessage(object sender, Message message)
         {
-            _logger.LogInformation($"got a new message: {message.Success}");
+            var json = JsonConvert.SerializeObject(message);
+            logger.LogInformation($"New message: {json.ToString()}");
 
-            _messagesRepository.Add(message);
+            messagesRepository.Add(message);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _subscriber.Start();
+            subscriber.Start();
 
             return Task.CompletedTask;
         }

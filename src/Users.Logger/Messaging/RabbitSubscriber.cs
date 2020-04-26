@@ -10,42 +10,29 @@ namespace Users.Logger.Messaging
 
     public class RabbitSubscriber : ISubscriber, IDisposable
     {
-        //private readonly IBusConnection _connection;
-        private IModel _channel;
-        private QueueDeclareOk _queue;
+        private readonly IConnection connection;
+        private IModel channel;
+        private const string queueName = "userQueue";
 
-        private const string ExchangeName = "userQueue";
 
-        public RabbitSubscriber()
+        public RabbitSubscriber(IConnectionFactory connectionFactory)
         {
-            //_connection = connection ?? throw new ArgumentNullException(nameof(connection));
-
+            this.connection = connectionFactory.CreateConnection();
         }
 
         private void InitChannel()
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            var _connection = factory.CreateConnection();
-           // _channel?.Dispose();
+            // _channel?.Dispose();
 
-            _channel = _connection.CreateModel();
+            channel = connection.CreateModel();
 
-           // _channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Fanout);
-
-           // _channel.ExchangeDeclare(exchange: ExchangeName, type: ExchangeType.Fanout);
-
-            // since we're using a Fanout exchange, we don't specify the name of the queue
-            // but we let Rabbit generate one for us. This also means that we need to store the
-            // queue name to be able to consume messages from it
-            _channel.QueueDeclare(queue: "userQueue",
+            channel.QueueDeclare(queue: queueName,
                              durable: false,
                              exclusive: false,
                              autoDelete: false,
                              arguments: null);
 
-            //_channel.QueueBind(_queue.QueueName, ExchangeName, string.Empty, null);
-
-            _channel.CallbackException += (sender, ea) =>
+            channel.CallbackException += (sender, ea) =>
             {
                 InitChannel();
                 InitSubscription();
@@ -54,11 +41,11 @@ namespace Users.Logger.Messaging
 
         private void InitSubscription()
         {
-            var consumer = new EventingBasicConsumer(_channel);
+            var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += OnMessageReceived;
 
-            _channel.BasicConsume(queue: "userQueue", autoAck: true, consumer: consumer);
+            channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
         }
 
         private void OnMessageReceived(object sender, BasicDeliverEventArgs eventArgs)
@@ -66,6 +53,7 @@ namespace Users.Logger.Messaging
             var byteArray = eventArgs.Body.ToArray();
             var body = Encoding.UTF8.GetString(byteArray);
             var message = JsonConvert.DeserializeObject<Message>(body);
+
             this.OnMessage(this, message);
         }
 
@@ -79,7 +67,7 @@ namespace Users.Logger.Messaging
 
         public void Dispose()
         {
-            _channel?.Dispose();
+            channel?.Dispose();
         }
     }
 }

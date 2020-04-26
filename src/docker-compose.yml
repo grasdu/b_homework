@@ -40,3 +40,16 @@ services:
         retries: 5
     networks:
       - dockerapi-dev
+      
+  Users.Logger:
+    image: users.logger:latest
+    restart: on-failure
+    depends_on:
+    - "rabbitmq"
+    build:
+        context: ./Users.Logger
+        dockerfile: Dockerfile
+    ports:
+    - "8082:80"     
+    networks:
+    - dockerapi-dev 

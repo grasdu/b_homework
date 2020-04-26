@@ -15,6 +15,9 @@ src/.vs/**
 src/**/packages/**
 Packages/**
 
+# Visual Studo cache/options directory
+.vs/
+
 
 
 

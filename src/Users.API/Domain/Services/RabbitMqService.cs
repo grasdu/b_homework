@@ -8,6 +8,7 @@
     public class RabbitMqService : IRabbitMqService
     {
         private readonly IConnection connection;
+        private const string queueName = "userQueue";
 
         public RabbitMqService(IConnectionFactory connectionFactory)
         {
@@ -18,7 +19,7 @@
         {
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "userQueue",
+                channel.QueueDeclare(queue: queueName,
                                      durable: false,
                                      exclusive: false,
                                      autoDelete: false,

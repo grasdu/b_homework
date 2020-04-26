@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
 using Users.Logger.Messaging;
 
 namespace Users.Logger
@@ -26,6 +27,9 @@ namespace Users.Logger
 
             services.AddSingleton<ISubscriber, RabbitSubscriber>();
             services.AddHostedService<SubscriberBackgroundService>();
+
+            var environment = Configuration.GetSection("Environment");
+            services.AddSingleton<IConnectionFactory>(new ConnectionFactory { HostName = environment.Value.ToString() });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
